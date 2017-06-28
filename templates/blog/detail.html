@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% load blog_tags %}
+{% block main %}
+    <article class="post post-1">
+        <header class="entry-header">
+            <h1 class="entry-title">{{ article_detail.title }}</h1>
+            <div class="entry-meta">
+                <span class="post-category"><a href="#">{{ article_detail.category }}</a></span>
+                <span class="post-date"><a href="#"><time class="entry-date"
+                                                          datetime="{{ article_detail.created_time }}">{{ article_detail.created_time }}</time></a></span>
+                <span class="post-author"><a href="#">{{ article_detail.author }}</a></span>
+                <span class="comments-link"><a href="#">{{ article_detail.comment_set.count }} 评论</a></span>
+                <span class="views-count"><a href="#"> 阅读</a></span>
+            </div>
+        </header>
+        <div class="entry-content clearfix">
+            {{ article_detail.body | safe }}
+        </div>
+    </article>
+    <section class="comment-area" id="comment-area">
+        <hr>
+        <h3>发表评论</h3>
+        <form action="{% url 'comments:post_comment' article_detail.pk%}" method="post" class="comment-form">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-4">
+                    <label for="{{ comment_form.name.id_for_label }}">名字：</label>
+                    {{ comment_form.name }}
+                    {{ comment_form.name.errors }}
+                </div>
+                <div class="col-md-4">
+                    <label for="{{ comment_form.email.id_for_label }}">邮箱：</label>
+                    {{ comment_form.email }}
+                    {{ comment_form.email.errors }}
+                </div>
+                <div class="col-md-4">
+                    <label for="{{ comment_form.url.id_for_label }}">个人站点：</label>
+                    {{ comment_form.url }}
+                    {{ comment_form.url.errors }}
+                </div>
+                <div class="col-md-12">
+                    <label for="{{ comment_form.text.id_for_label }}">评论：</label>
+                    {{ comment_form.text }}
+                    {{ comment_form.text.errors }}
+                </div>
+                <button type="submit" class="comment-btn">发表</button>
+            </div>    <!-- row -->
+        </form>
+        <div class="comment-list-panel">
+            <h3>评论列表，共 <span>{{ article_detail.comment_set.count }}</span> 条评论</h3>
+            <ul class="comment-list list-unstyled">
+                {% for comment in comment_list %}
+                    <li class="comment-item">
+                        <span class="nickname">{{ comment.name }}</span>
+                        <time class="submit-date" datetime="{{ comment.created_time }}">{{ comment.created_time }}</time>
+                        <div class="text">
+                            {{ comment.text }}
+                        </div>
+                </li>
+                {% empty %}
+                    <li>暂无评论</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </section>
+
+{% endblock main %}
+{% block toc %}
+    <div class="widget widget-content">
+            <h3 class="widget-title">文章目录</h3>
+            <ul>
+                <li>
+                    <a href="#">教程特点</a>
+                </li>
+            </ul>
+        </div>
+        <div class="widget widget-recent-posts">
+            <h3 class="widget-title">最新文章</h3>
+            <ul>
+                {% get_recent_articles as recent_articles_list %}
+                {% for recent_article in recent_articles_list %}
+                    <li>
+                        <a href="{% url 'blog:article_detail' recent_article.pk%}">{{ recent_article.title }}</a>
+                    </li>
+                {% empty %}
+                    <li>暂无新文章</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="widget widget-archives">
+            <h3 class="widget-title">归档</h3>
+            {% get_archives as archives_list %}
+            <ul>
+                {% for archive in archives_list %}
+                    <li>
+                        <a href="{% url 'blog:archives' archive.year archive.month%}">{{ archive.year }} 年 {{ archive.month }} 月</a>
+                    </li>
+                {% empty %}
+
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="widget widget-category">
+            <h3 class="widget-title">分类</h3>
+            {% get_categories as category_list %}
+            <ul>
+                {% for category in category_list %}
+                    <li>
+                        <a href="{% url 'blog:category' category.pk%}">{{ category.name }} <span class="post-count">()</span></a>
+                    </li>
+                {% empty %}
+                    <li>暂无分类</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="widget widget-tag-cloud">
+            <h3 class="widget-title">标签云</h3>
+            <ul>
+                <li>
+                    <a href="#">Django</a>
+                </li>
+            </ul>
+        </div>
+        <div class="rss">
+            <a href=""><span class="ion-social-rss-outline"></span> RSS 订阅</a>
+        </div>
+    </div>
+{% endblock toc %}
