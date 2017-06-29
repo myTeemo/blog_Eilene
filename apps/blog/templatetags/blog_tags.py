@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django import template
-
+from django.db.models import Count
 from ..models import Article
 from ..models import Category
 
@@ -23,7 +23,7 @@ def get_archives():
 
 @register.simple_tag
 def get_categories():
-    return Category.objects.all()
+    return Category.objects.annotate(num_article=Count('article')).filter(num_article__gt=0)
 
 
 
