@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'users',
     'blog',
     'comments',
+    'pure_pagination',
 
 ]
 
