@@ -4,7 +4,9 @@ from __future__ import unicode_literals
 
 from datetime import datetime
 
+import markdown
 from django.db import models
+from django.utils.html import strip_tags
 
 from users.models import UserProfile
 
@@ -43,6 +45,21 @@ class Article(models.Model):
     category = models.ForeignKey(Category, verbose_name=u'归属分类')
     tags = models.ManyToManyField(Tag, blank=True, verbose_name=u'标签')
     author = models.ForeignKey(UserProfile, verbose_name=u'作者')
+
+    click_nums = models.PositiveIntegerField(verbose_name=u'阅读量', default=0)
+
+    def increase_click_nums(self):
+        self.click_nums += 1
+        self.save(update_fields=['click_nums'])
+
+    def save(self, *args, **kwargs):
+        if not self.excerpt:
+            md = markdown.Markdown(extensions=[
+                'markdown.extensions.extra',
+                'markdown.extensions.codehilite',
+            ])
+            self.excerpt = strip_tags(md.convert(self.body))[:54]
+        super(Article, self).save(*args, **kwargs)
 
     def __unicode__(self):
         return self.title
