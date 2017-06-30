@@ -10,7 +10,7 @@
                                                           datetime="{{ article_detail.created_time }}">{{ article_detail.created_time }}</time></a></span>
                 <span class="post-author"><a href="#">{{ article_detail.author }}</a></span>
                 <span class="comments-link"><a href="#">{{ article_detail.comment_set.count }} 评论</a></span>
-                <span class="views-count"><a href="#"> 阅读</a></span>
+                <span class="views-count"><a href="#"> {{ article_detail.click_nums }} 阅读</a></span>
             </div>
         </header>
         <div class="entry-content clearfix">
@@ -24,22 +24,22 @@
             {% csrf_token %}
             <div class="row">
                 <div class="col-md-4">
-                    <label for="{{ comment_form.name.id_for_label }}">名字：</label>
+                    <label for="{{ comment_form.name.id_for_label }}">名字(*)：</label>
                     {{ comment_form.name }}
                     {{ comment_form.name.errors }}
                 </div>
                 <div class="col-md-4">
-                    <label for="{{ comment_form.email.id_for_label }}">邮箱：</label>
+                    <label for="{{ comment_form.email.id_for_label }}">邮箱(*)：</label>
                     {{ comment_form.email }}
                     {{ comment_form.email.errors }}
                 </div>
                 <div class="col-md-4">
-                    <label for="{{ comment_form.url.id_for_label }}">个人站点：</label>
+                    <label for="{{ comment_form.url.id_for_label }}">个人站点(*)：</label>
                     {{ comment_form.url }}
                     {{ comment_form.url.errors }}
                 </div>
                 <div class="col-md-12">
-                    <label for="{{ comment_form.text.id_for_label }}">评论：</label>
+                    <label for="{{ comment_form.text.id_for_label }}">评论(*)：</label>
                     {{ comment_form.text }}
                     {{ comment_form.text.errors }}
                 </div>
@@ -70,7 +70,7 @@
             <h3 class="widget-title">文章目录</h3>
             <ul>
                 <li>
-                    <a href="#">教程特点</a>
+                    <a href="{% url 'blog:category' article_detail.category.pk%}">{{ article_detail.category.name }}</a>
                 </li>
             </ul>
         </div>
