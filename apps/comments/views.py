@@ -5,9 +5,8 @@ from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
 from django.views.generic import View
 
-from .models import Comment
-from blog.views import ArticleDetailView
 from .forms import CommentForm
+from .forms import ContactForm
 from blog.models import Article
 
 
@@ -32,4 +31,21 @@ class PostCommentView(View):
                        'comment_list': comment_list,
                        }
             return render(request, 'blog/detail.html',context=context)
+
+
+class PostContactView(View):
+    def get(self, request):
+        pass
+
+    def post(self, request):
+        contact_form = ContactForm(request.POST)
+
+        if contact_form.is_valid():
+            contact_form.save()
+            return redirect('blog:index')
+        else:
+            context = {
+                'contact_form': contact_form,
+            }
+            return render(request, 'contact.html', context=context)
 
