@@ -17,9 +17,12 @@ import xadmin
 
 from django.conf.urls import url
 from django.conf.urls import include
+from django.views.generic.base import RedirectView
+
 
 urlpatterns = [
     url(r'^xadmin/', xadmin.site.urls),
+    url(r'^favicon\.ico$', RedirectView.as_view(url='/static/media/favicon.ico')),
     url(r'^', include('blog.urls')),
     url(r'^', include('comments.urls')),
 ]
