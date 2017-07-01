@@ -15,7 +15,7 @@ from comments.forms import ContactForm
 
 from .models import Article
 from .models import Category
-
+from .models import ImageLib
 
 class IndexView(View):
 
@@ -86,6 +86,7 @@ class CategoryView(View):
 
 
 class AboutView(View):
+
     def get(self, request):
         return render(request, 'about.html', context={})
 
@@ -94,4 +95,14 @@ class ContactView(View):
     def get(self, request):
         contact_form = ContactForm()
         return render(request, 'contact.html', context={'contact_form':contact_form})
+
+
+class ImageLibView(View):
+
+    def get(self, request, year, month, image_address):
+        image_join = ['images', year, month, image_address]
+        address = '/'.join(image_join)
+        image = get_object_or_404(ImageLib, image=address)
+
+        return render(request, 'blog/show_image.html', context={'image': image})
 
