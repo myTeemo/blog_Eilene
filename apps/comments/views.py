@@ -1,5 +1,7 @@
 # -*- encoding:utf-8 -*-
 
+import markdown
+
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
@@ -26,6 +28,12 @@ class PostCommentView(View):
             return redirect('blog:article_detail', pk=pk)
         else:
             comment_list = article_detail.comment_set.all()
+            article_detail.body = markdown.markdown(article_detail.body,
+                                                    extensions=[
+                                                        'markdown.extensions.extra',
+                                                        'markdown.extensions.codehilite',
+                                                        'markdown.extensions.toc',
+                                                    ])
             context = {'article_detail': article_detail,
                        'comment_form': comment_form,
                        'comment_list': comment_list,
