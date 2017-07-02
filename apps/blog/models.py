@@ -69,3 +69,18 @@ class Article(models.Model):
         verbose_name_plural = verbose_name
         ordering = ['-created_time']
 
+
+class ImageLib(models.Model):
+    name = models.CharField(verbose_name=u'图片名字', max_length=150)
+    image = models.ImageField(upload_to='images/%Y/%m', verbose_name=u'图片地址')
+    article = models.ForeignKey(Article, verbose_name=u'所属文章')
+    created_time = models.DateTimeField(verbose_name=u'添加时间', default=datetime.now)
+
+    def __unicode__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = u'图片库'
+        verbose_name_plural = verbose_name
+        ordering = ['-created_time']
+
