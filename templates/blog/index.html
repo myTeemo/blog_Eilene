@@ -57,9 +57,12 @@
 {% endblock main %}
 
 {% block toc %}
-
+    <div class="widget">
+        <h3 class="widget-title">光明轨迹</h3>
+        <script charset="Shift_JIS" src="http://chabudai.sakura.ne.jp/blogparts/honehoneclock/honehone_clock_wh.js"></script>
+    </div>
     <div class="widget widget-recent-posts">
-        <h3 class="widget-title">最新文章</h3>
+        <h3 class="widget-title">走过光明</h3>
         <ul>
             {% get_recent_articles as recent_articles_list %}
             {% for recent_article in recent_articles_list %}
@@ -72,7 +75,7 @@
         </ul>
     </div>
     <div class="widget widget-archives">
-        <h3 class="widget-title">归档</h3>
+        <h3 class="widget-title">每一缕光阴</h3>
         {% get_archives as archives_list %}
         <ul>
             {% for archive in archives_list %}
@@ -85,7 +88,7 @@
     </div>
 
     <div class="widget widget-category">
-        <h3 class="widget-title">分类</h3>
+        <h3 class="widget-title">光栅</h3>
         {% get_categories as category_list %}
         <ul>
             {% for category in category_list %}
@@ -99,7 +102,7 @@
     </div>
 
     <div class="widget widget-tag-cloud">
-        <h3 class="widget-title">标签云</h3>
+        <h3 class="widget-title">云光明</h3>
         <ul>
             {% for category in category_list %}
                 <li>
